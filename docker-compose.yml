@@ -1,0 +1,40 @@
+version: "3"
+
+services:
+  db:
+    image: "postgres:9.4"
+    network_mode: bridge
+    container_name: "viridis_db"
+    volumes:
+      - viridis_dbdata:/var/lib/postgresql/data
+    expose:
+      - 5432
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=viridis
+      - POSTGRES_PASSWORD=HIfyh2wQf9(9
+      - POSTGRES_DB=exercise
+    restart: unless-stopped
+
+  local-api:
+    build: .
+    environment:
+      POSTGRES_USER: viridis
+      POSTGRES_PASSWORD: HIfyh2wQf9(9
+      POSTGRES_DB: exercise
+      JWT_SECRET: 0OE0IBGOsbKAIrfHAL0Y4G2ily2QUpw5iF/EjF8kKbqG48kmeWKD2Qg3RALlp8sSuVQ2K0dc/bgQjG3BnoxQjcu22QomFqHaYkTOne1NAA8dWYCn47AsfG9sUmvyzClR4Goa9ZcZaB1jN0vtXujclNnBw07XvjRstULpvCEAtOBKJjq5AiramGu1qEuhDvmVyJUD48Dgg9LPKhFTUE4051YsgC6hFOyZ/m4YOQ==%
+    network_mode: bridge
+    container_name: viridis_api
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+    depends_on:
+      - db
+    links:
+      - db
+
+volumes:
+  viridis_dbdata:
