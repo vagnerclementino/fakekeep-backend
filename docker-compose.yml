@@ -1,0 +1,39 @@
+version: "3"
+
+services:
+  db:
+    image: "postgres:9.4"
+    network_mode: bridge
+    container_name: "fakekeep_db"
+    volumes:
+      - fakekeep_dbdata:/var/lib/postgresql/data
+    expose:
+      - 5432
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=fakekeep
+      - POSTGRES_PASSWORD=HIfyh2wQf9(9
+      - POSTGRES_DB=fakekeep
+    restart: unless-stopped
+
+  local-api:
+    build: .
+    environment:
+      POSTGRES_USER: fakekeep
+      POSTGRES_PASSWORD: HIfyh2wQf9(9
+      POSTGRES_DB: fakekeep
+    network_mode: bridge
+    container_name: fakekeep_api
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+    depends_on:
+      - db
+    links:
+      - db
+
+volumes:
+  fakekeep_dbdata:
