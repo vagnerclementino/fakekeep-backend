@@ -1,7 +1,7 @@
 include MakefileDocumentation
 SERVICE_NAME = api-fakekeep
 IMAGE_TAG ?= $(shell git rev-parse --short HEAD)
-IMAGE_ID = $(SERVICE_NAME):$(IMAGE_TAG)
+IMAGE_ID = vclementino/$(SERVICE_NAME):$(IMAGE_TAG)
 
 build-image:
 	docker build -t $(IMAGE_ID) -f Dockerfile .
