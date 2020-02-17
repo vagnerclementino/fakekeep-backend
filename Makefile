@@ -1,22 +1,30 @@
 include MakefileDocumentation
+SERVICE_NAME = api-fakekeep
+IMAGE_TAG ?= $(shell git rev-parse --short HEAD)
+IMAGE_ID = $(SERVICE_NAME):$(IMAGE_TAG)
 
-run: ##@application Starts API Locally
-	./mvnw clean package -DskipTests && docker-compose up --build
+build-image:
+	docker build -t $(IMAGE_ID) -f Dockerfile .
+
+build-artifact:
+	./gradlew bootJar
+
+run-only:
+	docker-compose up
+
+run: build-image build-artifact run-only
 
 stop: ##@application Stop all containers.
 	docker-compose down
 
-build: ##@application Creates docker containers.
-	docker-compose build
-
 container: ##@helpers Do a docker exec bash inside container.
-	docker exec -it viridis_api /bin/sh
+	docker exec -it fakekeep_api /bin/sh
 
 test: ##@tests Run all tests
-	./mvnw clean test -Dspring.profiles.active=test
+	./gradlew test -Dspring.profiles.active=test
 
 psql: ##@helpers Start a postgres client
-	docker exec -it viridis_db /bin/bash -c 'psql exercise viridis'
+	docker exec -it fakekeep_db /bin/bash -c 'psql fakekeep fakekeep'
 
-pmd: ##@helpers Run a code analysis
-	./mvnw pmd:pmd pmd:cpd pmd:check pmd:cpd-check
+lint: ##@helpers Run a code analysis
+	./gradlew lint
