@@ -1,6 +1,7 @@
-package com.example.fakekeep
+package com.example.fakekeep.components
 
 
+import com.example.fakekeep.FakekeepApplication
 import com.example.fakekeep.data.Greeting
 import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Then
