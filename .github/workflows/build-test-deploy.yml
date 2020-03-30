@@ -32,7 +32,7 @@ jobs:
           architecture: x64
   
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew clean bootJar -x test
         
       - name: Test with Gradle
         run: ./gradlew cleanTest test
