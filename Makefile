@@ -3,7 +3,7 @@ SERVICE_NAME = api-fakekeep
 IMAGE_TAG ?= $(shell git rev-parse --short HEAD)
 IMAGE_ID = vclementino/$(SERVICE_NAME):$(IMAGE_TAG)
 
-build-image:
+build-image: build-artifact
 	docker build -t $(IMAGE_ID) -f Dockerfile .
 
 build-artifact:
@@ -12,7 +12,7 @@ build-artifact:
 run-only:
 	docker-compose up
 
-run: build-artifact build-image run-only
+run: build-image run-only
 
 stop: ##@application Stop all containers.
 	docker-compose down
