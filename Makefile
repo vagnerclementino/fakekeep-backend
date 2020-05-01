@@ -1,10 +1,15 @@
 include MakefileDocumentation
 SERVICE_NAME = api-fakekeep
 IMAGE_TAG ?= $(shell git rev-parse --short HEAD)
-IMAGE_ID = vclementino/$(SERVICE_NAME):$(IMAGE_TAG)
+IMAGE_ID = vagnerclementino/$(SERVICE_NAME):$(IMAGE_TAG)
+DOCKER_IMAGE_ID = vagnerclementino/dev:api-fakekeep-lastest
 
 build-image: build-artifact
 	docker build -t $(IMAGE_ID) -f Dockerfile .
+
+push-image: build-image
+	docker tag $(IMAGE_ID) $(DOCKER_IMAGE_ID)
+	docker push $(DOCKER_IMAGE_ID)
 
 build-artifact:
 	./gradlew clean bootJar
